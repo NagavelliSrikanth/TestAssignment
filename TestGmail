@@ -1,0 +1,50 @@
+package Testauto;
+
+	import org.openqa.selenium.By;
+	import org.openqa.selenium.WebDriver;
+	import org.openqa.selenium.WebElement;
+    import org.openqa.selenium.edge.EdgeDriver;
+    import org.openqa.selenium.support.ui.ExpectedConditions;
+	import org.openqa.selenium.support.ui.WebDriverWait;
+
+	public class Gmail {
+	    public static void main(String[] args) {
+	        
+	        System.setProperty("webdriver.edge.driver", "C:\\\\WebDriver\\\\bin\\\\msedgedriver.exe");
+
+	        WebDriver driver = new EdgeDriver();
+	        driver.get("https://mail.google.com/");
+	        driver.findElement(By.id("identifierId")).sendKeys("Test@gmail.com");
+	        driver.findElement(By.id("identifierNext")).click();
+	        WebDriverWait wait = new WebDriverWait(driver, 10);
+	        wait.until(ExpectedConditions.elementToBeClickable(By.name("password"))).sendKeys("password");
+	        driver.findElement(By.id("passwordNext")).click();
+	        driver.findElement(By.cssSelector(".z0 div")).click();
+	        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("to"))).sendKeys("Test@gmail.com");
+	        driver.findElement(By.name("subjectbox")).sendKeys("Test Mail");
+	        driver.findElement(By.cssSelector(".Am.Al.editable")).sendKeys("Test Email Body");
+	        driver.findElement(By.cssSelector(".T-I.J-J5-Ji.aoO.v7.T-I-atl.L3")).click();
+	        wait.until(ExpectedConditions.visibilityOfElementLocated(By.partialLinkText("Inbox")));
+	        WebElement emailSubject = driver.findElement(By.cssSelector("span.bog"));
+	        emailSubject.click();
+	        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".aZo.J-J5-Ji.T-I-ax7.L3"))).click();
+	        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".hP")));
+	        String label = driver.findElement(By.cssSelector(".av")).getText();
+	        if (label.equals("Social")) {
+	            System.out.println("Email is labeled as 'Social'");
+	        } else {
+	            System.out.println("Email is not labeled as 'Social'");
+	        }
+
+	        // Verify subject and body of the received email
+	        String receivedSubject = driver.findElement(By.cssSelector(".hP .hP")).getText();
+	        String receivedBody = driver.findElement(By.cssSelector(".a3s.aXjCH")).getText();
+
+	        if (receivedSubject.equals("Test Mail") && receivedBody.equals("Test Email Body")) {
+	            System.out.println("Received email subject and body verified.");
+	        } else {
+	            System.out.println("Received email subject and body verification failed.");
+	        }
+	        driver.quit();
+	    }
+	}
