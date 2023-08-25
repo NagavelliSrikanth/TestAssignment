@@ -1,0 +1,36 @@
+package Testauto;
+import java.util.List;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.edge.EdgeDriver;
+
+public class Amazon {
+    public static void main(String[] args) {
+        System.setProperty("webdriver.edge.driver", "C:\\WebDriver\\bin\\msedgedriver.exe");
+        WebDriver driver = new EdgeDriver();
+            driver.get("https://www.amazon.in");
+            driver.manage().window().maximize();
+            WebElement searchBox = driver.findElement(By.id("twotabsearchtextbox"));
+            searchBox.sendKeys("Wrist Watches");
+            WebElement searchButton = driver.findElement(By.cssSelector("input[value='Go']"));
+            searchButton.click();
+            driver.findElement(By.linkText("Analogue")).click();
+            driver.findElement(By.linkText("Leather")).click();
+            driver.findElement(By.linkText("Titan")).click();  
+            driver.findElement(By.linkText("25% Off or more")).click();
+            List<WebElement> searchResults = driver.findElements(By.cssSelector(".s-result-item"));
+            
+            if (searchResults.size() >= 5) {
+                WebElement fifthResult = searchResults.get(4);
+                System.out.println(fifthResult.getText());
+            } else {
+                System.out.println("Less than five search results.");
+            }
+
+            driver.quit();
+        }
+    }
+
+
+
